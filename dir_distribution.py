@@ -27,3 +27,5 @@ winter_table['PROB']=[i/len(season_data[0]) for i in winter_table['NUMBER']]
 spring_table['PROB']=[i/len(season_data[1]) for i in spring_table['NUMBER']]
 summer_table['PROB']=[i/len(season_data[2]) for i in summer_table['NUMBER']]
 autumn_table['PROB']=[i/len(season_data[3]) for i in autumn_table['NUMBER']]
+
+

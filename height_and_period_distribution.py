@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from preprocess import data_preprocessed as dt
+import matplotlib.pyplot as plt
 
 description=dt.describe()
 
@@ -23,3 +24,6 @@ season_data=[dt.loc[dt.SEASON==i,:] for i in range(4)]
 
 season_period=[distribute(i,period_space,'Tbar') for i in season_data]
 season_height=[distribute(i,height_space,'HS') for i in season_data]
+
+plt.hist(annual_period)
+plt.show()

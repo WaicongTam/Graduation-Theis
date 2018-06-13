@@ -32,3 +32,6 @@ for i in range(len(period_average)):
         period_average.iloc[i,j]=seasons[i][j-2][0]
         height_average.iloc[i,j]=seasons[i][j-2][1]
 
+with pd.ExcelWriter('season_average.xlsx') as writer:
+    height_average.to_excel(writer,sheet_name='HS')
+    period_average.to_excel(writer,sheet_name='Tbar')

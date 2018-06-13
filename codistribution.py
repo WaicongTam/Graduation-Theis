@@ -11,11 +11,14 @@ period_index=['5~6','6~7','7~8','8~9','9~10','10~11','11~12','12~13','13~14','14
 def height_dir_distribute(data,space):
     table=np.zeros((len(height_space)-1,len(dir_space)))
     for i in range(len(data)):
-        column=dir_space.index(data.iloc[i,11])
-        for j in range(len(height_space)-1):
-            if data.iloc[i,9]>=(space[j]) and data.iloc[i,9]<(space[j]+1):
-                row=j
-                table[row,column]+=1
+        for j in range(len(dir_space)):
+            if data.iloc[i,11]==dir_space[j]:
+                column=j
+                for k in range(len(height_space)-1):
+                    if data.iloc[i,9]>=(space[k]) and data.iloc[i,9]<(space[k+1]):
+                        row=k
+                        table[row,column]+=1
+                    else:continue
             else:continue
     table[:,:]/=(len(data)*0.01)
     return pd.DataFrame(table,index=height_index,columns=dir_space)
@@ -29,10 +32,10 @@ def height_period_distribute(data,space1,space2):
     table=np.zeros((len(space2)-1,len(space1)-1))
     for i in range(len(data)):
         for j in range(len(space1)-1):
-            if data.iloc[i,8]>=(space1[j]) and data.iloc[i,8]<(space1[j]+1):
+            if data.iloc[i,8]>=(space1[j]) and data.iloc[i,8]<(space1[j+1]):
                 column=j
                 for k in range(len(space2)-1):
-                    if data.iloc[i,9]>=(space2[k]) and data.iloc[i,9]<(space2[k]+1):
+                    if data.iloc[i,9]>=(space2[k]) and data.iloc[i,9]<(space2[k+1]):
                         row=k
                         table[row,column]+=1
                     else:continue
@@ -42,3 +45,18 @@ def height_period_distribute(data,space1,space2):
 
 annual_height_period=height_period_distribute(dt,period_space,height_space)
 season_height_period=[height_period_distribute(i,period_space,height_space) for i in season_data]
+
+with pd.ExcelWriter('height_dir_codistribution.xlsx') as writer:
+    annual_height_dir.to_excel(writer,sheet_name='annual')
+    season_height_dir[0].to_excel(writer,sheet_name='winter')
+    season_height_dir[1].to_excel(writer,sheet_name='spring')
+    season_height_dir[2].to_excel(writer,sheet_name='summer')
+    season_height_dir[3].to_excel(writer,sheet_name='autumn')
+
+with pd.ExcelWriter('height_period_codistribution.xlsx') as writer:
+    annual_height_period.to_excel(writer,sheet_name='annual')
+    season_height_period[0].to_excel(writer,sheet_name='winter')
+    season_height_period[1].to_excel(writer,sheet_name='spring')
+    season_height_period[2].to_excel(writer,sheet_name='summer')
+    season_height_period[3].to_excel(writer,sheet_name='autumn')
+

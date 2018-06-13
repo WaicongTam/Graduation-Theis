@@ -24,3 +24,15 @@ def dir_stat(data):
 annual_strong_dir_stat=dir_stat(annual_strong[0][0])
 season_strong_dir_stat=[dir_stat(i[0][0]) for i in season_strong]
 
+with pd.ExcelWriter('strong_waves.xlsx') as writer:
+    annual_strong_dir_stat[0].to_excel(writer,sheet_name='annual_number')
+    annual_strong_dir_stat[1].to_excel(writer,sheet_name='annual_prob')
+    season_strong_dir_stat[0][0].to_excel(writer,sheet_name='winter_number')
+    season_strong_dir_stat[0][1].to_excel(writer,sheet_name='winter_prob')
+    season_strong_dir_stat[1][0].to_excel(writer,sheet_name='spring_number')
+    season_strong_dir_stat[1][1].to_excel(writer,sheet_name='spring_prob')
+    season_strong_dir_stat[2][0].to_excel(writer,sheet_name='summer_number')
+    season_strong_dir_stat[2][1].to_excel(writer,sheet_name='summer_prob')
+    season_strong_dir_stat[3][0].to_excel(writer,sheet_name='autumn_number')
+    season_strong_dir_stat[3][1].to_excel(writer,sheet_name='autumn_prob')
+    

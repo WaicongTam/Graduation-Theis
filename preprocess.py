@@ -19,6 +19,8 @@ time_concat=pd.Series([time_ym[i]+time_dh[i] for i in range(len(time_ym))])
 data_preprocessed.insert(loc=0, column='TIME', value=time_concat)
 
 def direction(deg):
+    if deg >=348.75:
+        deg-=360
     if deg>=-11.25 and deg<11.25:
         return 'N'
     if deg>=11.25 and deg<33.75:
@@ -51,19 +53,17 @@ def direction(deg):
         return 'NW'
     if deg>=326.25 and deg<348.75:
         return 'NNW'
-wavedir_tran=[i for i in data_preprocessed['DMDIR']]
-for i in wavedir_tran:
-    if i>348.75:
-        i-=360
-winddir_tran=[i for i in data_preprocessed['WD']]
-for i in wavedir_tran:
-    if i>348.75:
-        i-=360
+
+dmdir_cache=data_preprocessed.loc[0:,'DMDIR']
+dmdir_trans=[i+180 for i in dmdir_cache]
+data_preprocessed.loc[0:,'DMDIR']=dmdir_trans
+winddir_tran=[i for i in data_preprocessed.loc[0:,'WD']]
+wavedir_tran=[i for i in data_preprocessed.loc[0:,'DMDIR']]
 
 WAVEDIR=[direction(i) for i in wavedir_tran]
 data_preprocessed.insert(loc=9, column='WAVEDIR', value=WAVEDIR)
 WINDDIR=[direction(i) for i in winddir_tran]
-data_preprocessed.insert(loc=4, column='WINDDIR', value=WAVEDIR)
+data_preprocessed.insert(loc=4, column='WINDDIR', value=WINDDIR)
 
 year_tran=[int(i[0:4]) for i in data_preprocessed['TIME']]
 data_preprocessed.insert(loc=1, column='YEAR', value=year_tran)
